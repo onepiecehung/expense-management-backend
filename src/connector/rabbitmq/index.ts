@@ -10,8 +10,8 @@ export async function createQueue() {
         RABBIT.initQueue(JOB_NAME.USER_SESSION_WRITE, true);
         RABBIT.initQueue(JOB_NAME.ACCESS_TOKEN_FROM_NEW_LOCATION, false);
         RABBIT.initQueue(JOB_NAME.LOG_ACTION, false);
-        
-        // TODO: This for subscription 
+
+        // TODO: This for subscription
         RABBIT.initExchange(SUB_NAME.S_TEST_RABBIT, true);
         logger.log("⌛ ⌛ ⌛ AMQP queue is running...");
     } catch (error) {

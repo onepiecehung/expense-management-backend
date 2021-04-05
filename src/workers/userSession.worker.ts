@@ -8,12 +8,7 @@ RABBIT?.consumeData(
     JOB_NAME.USER_SESSION_WRITE,
     async (msg: any, channel: any) => {
         try {
-            let message: any = JSON.parse(msg.content.toString());
-
-            if (process.env.NODE_ENV === "development") {
-                logger.debug(message);
-            }
-
+            const message: any = JSON.parse(msg.content.toString());
             let userSession: any = { ...message };
 
             userSession = Object.assign(userSession, {
@@ -21,18 +16,6 @@ RABBIT?.consumeData(
             });
 
             await UserSessionRepository.create(userSession);
-            // await UserSessionRepository.findOneAndUpdateUpsert(
-            //     {
-            //         userAgent: message?.userAgent,
-            //         user: message?.user,
-            //         ip: message?.ip,
-            //         location: userSession?.location,
-            //         status: "active",
-            //         // uuid: message?.uuid,
-            //     },
-            //     userSession
-            // );
-
             logger.warn(`Write user session success`);
 
             channel.ack(msg);

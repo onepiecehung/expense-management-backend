@@ -9,7 +9,7 @@ import { logger } from "../core/log/logger.mixed";
 
 RABBIT?.consumeData(JOB_NAME.LOG_ACTION, async (msg: any, channel: any) => {
     try {
-        let message: any = JSON.parse(msg.content.toString());
+        const message: any = JSON.parse(msg.content.toString());
 
         delete message?.body?.password;
 
@@ -29,17 +29,13 @@ RABBIT?.consumeData(JOB_NAME.LOG_ACTION, async (msg: any, channel: any) => {
                 break;
         }
 
-        if (process.env.NODE_ENV === "development") {
-            logger.debug(message);
-        }
-
         if (message.token) {
             message.token = jwt.verify(message.token, PRIVATE_KEY_ACCESS);
         } else delete message.token;
-        
-        let location = lookup(message.ip);
 
-        let payload: any = Object.assign(message, {
+        const location = lookup(message.ip);
+
+        const payload: any = Object.assign(message, {
             location: location,
             level: level,
         });

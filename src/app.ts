@@ -2,10 +2,12 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
-import promBundle from "express-prom-bundle"; //https://www.npmjs.com/package/express-prom-bundle
+import promBundle from "express-prom-bundle"; // https://www.npmjs.com/package/express-prom-bundle
 import helmet from "helmet";
 import createError from "http-errors";
 import morgan from "morgan";
+import UAParser from "ua-parser-js";
+import { v4 as uuidv4 } from "uuid";
 
 import { testAMQP } from "./connector/rabbitmq/__test__/__test__.worker";
 import { createQueue } from "./connector/rabbitmq/index";
@@ -37,7 +39,7 @@ const metricsMiddleware = promBundle({
     ],
 });
 
-//TODO: Running worker
+// TODO: Running worker
 createQueue()
     .then(() => {
         setTimeout(() => {
@@ -49,6 +51,24 @@ createQueue()
     });
 
 const app: Application = express();
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+    Object.assign(
+        res.locals,
+        {
+            userAgent: new UAParser(req.headers["user-agent"]),
+        },
+        {
+            ip:
+                req.headers["x-forwarded-for"] ||
+                req.ip ||
+                req.ips ||
+                req.headers["x-real-ip"],
+        },
+        { uuid: uuidv4() }
+    );
+    next();
+}, log);
 
 /**
  * todo: https://www.npmjs.com/package/express-prom-bundle
@@ -84,9 +104,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// todo: log to db
-app.use(log);
-
 // TODO setup router
 app.use("/rest", rest);
 app.use("/graphql", graphql);
@@ -95,19 +112,6 @@ app.use("/graphql", graphql);
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(createError(404));
 });
-
-// TODO Web Template Studio: Add your own error handler here.
-// if (process.env.NODE_ENV === "production") {
-//     // Do not send stack trace of error message when in production
-//     app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-//         return responseError(req, res, err);
-//     });
-// } else {
-//     // Log stack trace of error message while in development
-//     app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-//         return responseError(req, res, err);
-//     });
-// }
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     return responseError(req, res, err);

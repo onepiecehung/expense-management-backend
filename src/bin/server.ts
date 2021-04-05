@@ -8,7 +8,7 @@ import http from "http";
 
 import app from "../app";
 import { SERVER } from "../config/service.config";
-import SocketIO from "../connector/socket.io/init/index";
+// import SocketIO from "../connector/socket.io/init/index";
 import { logger } from "../core/log/logger.mixed";
 
 // const SERVER from "../config/constants");
@@ -28,8 +28,8 @@ const server: any = http.createServer(app);
 /**
  * TODO: Setup socket.io
  */
-app.set("socketService", new SocketIO(server));
-export const socketService = app.get("socketService");
+// app.set("socketService", new SocketIO(server));
+// export const socketService = app.get("socketService");
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -67,7 +67,9 @@ function normalizePort(val: any) {
         return port;
     }
 
-    logger.error(`⚠️ ⚠️ ⚠️  Bruh... port = ${port}? 📌📌📌 , some function will be missing!!!`);
+    logger.error(
+        `⚠️ ⚠️ ⚠️  Bruh... port = ${port}? 📌📌📌 , some function will be missing!!!`
+    );
     return Math.abs(port);
 }
 
