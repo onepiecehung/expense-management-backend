@@ -71,12 +71,12 @@ const UserSchema: Schema = new Schema(
     },
     {
         timestamps: true,
-        collection: "Users", //TODO: Set name collection
+        collection: "Users", // TODO: Set name collection
     }
 );
 
 UserSchema.set("toJSON", {
-    transform: function (doc: any, ret: any) {
+    transform: (doc: any, ret: any) => {
         if (ret.gender === 0) {
             ret.gender = `Other`;
         }
@@ -98,7 +98,7 @@ UserSchema.set("toJSON", {
 });
 
 UserSchema.set("toObject", {
-    transform: function (doc: any, ret: any) {
+    transform: (doc: any, ret: any) => {
         if (ret.gender === 0) {
             ret.gender = `Other`;
         }
@@ -124,7 +124,7 @@ UserSchema.virtual("fullName").get(function (this: IUserBaseDocument) {
     return `${this.firstName} ${this.lastName}`;
 });
 
-//TODO: Methods
+// TODO: Methods
 // UserSchema.methods.getGender = function (this: IUserBaseDocument) {
 //     return this.gender > 0 ? "Male" : "Female";
 // };
@@ -137,7 +137,7 @@ UserSchema.pre<IUser>("save", async function (next: any) {
             _this.password = hashSync(_this.password, salt);
         }
 
-        //TODO: Update time for document
+        // TODO: Update time for document
         if (_this.isNew) {
             Object.assign(_this.$locals, { wasNew: _this.isNew });
             // _this.$locals.wasNew = _this.isNew;
@@ -157,19 +157,19 @@ UserSchema.pre<IUser>("save", async function (next: any) {
 UserSchema.post<IUser>("save", function (this: any) {
     try {
         const _this = this;
-        //! This is a document after save
+        // ! This is a document after save
         if (_this?.$locals?.wasNew) {
-            //new document
+            // new document
         } else {
-            //old document
+            // old document
         }
     } catch (error) {
         throw new Error(error);
     }
 });
 
-//TODO: Log error
-UserSchema.post<IUser>("save", function (error: any, doc: any, next: any) {
+// TODO: Log error
+UserSchema.post<IUser>("save", (error: any, doc: any, next: any) => {
     if (process.env.NODE_ENV === "development") {
         logger.log(doc);
     }
@@ -178,14 +178,13 @@ UserSchema.post<IUser>("save", function (error: any, doc: any, next: any) {
     else next(error);
 });
 
-//TODO: Query
+// TODO: Query
 UserSchema.pre<Query<Document, IUser, IUser>>("findOne", async function () {
     // Prints "{ email: 'bill@microsoft.com' }"
     if (process.env.NODE_ENV === "development") {
         logger.log(this.getFilter());
     }
 });
-
 
 // UserSchema.pre<IUser>("findOne", function () {
 //     // Prints "{ email: 'bill@microsoft.com' }"
@@ -196,7 +195,7 @@ UserSchema.pre<Query<Document, IUser, IUser>>("findOne", async function () {
 // UserSchema.post<Query<IUser>>("findOneAndUpdate", async function (doc) {
 // })
 
-//Set up PaginateModel
+// Set up PaginateModel
 // UserSchema.plugin(MongoosePaginate);
 
 // interface Model<T extends Document> extends PaginateModel<T> {}

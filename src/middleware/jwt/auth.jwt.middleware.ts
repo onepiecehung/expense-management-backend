@@ -42,7 +42,7 @@ export async function Authentication(
         if (token) {
             const JWT: any = jwt.verify(token, PRIVATE_KEY_ACCESS);
 
-            const accessTokenKey: string = `AToken_UserId_${JWT?._id}_uuid_${JWT?.uuid}`;
+            const accessTokenKey: string = `AccessToken_UserId_${JWT?._id}_uuid_${JWT?.uuid}`;
             const accessTokenValue: string = await Redis.getJson(
                 accessTokenKey
             );
@@ -120,7 +120,7 @@ export async function AuthenticationWebSocket(
         if (token) {
             const JWT: any = jwt.verify(token, PRIVATE_KEY_ACCESS);
 
-            const accessTokenKey: string = `AToken_UserId_${JWT?._id}_uuid_${JWT?.uuid}`;
+            const accessTokenKey: string = `AccessToken_UserId_${JWT?._id}_uuid_${JWT?.uuid}`;
             const accessTokenValue: string = await Redis.getJson(
                 accessTokenKey
             );

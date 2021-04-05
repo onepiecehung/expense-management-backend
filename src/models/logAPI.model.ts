@@ -81,13 +81,13 @@ const LogAPISchema: Schema = new Schema(
 );
 
 LogAPISchema.set("toJSON", {
-    transform: function (doc: any, ret: any) {
+    transform: (doc: any, ret: any) => {
         delete ret.__v;
     },
 });
 
 LogAPISchema.set("toObject", {
-    transform: function (doc: any, ret: any) {
+    transform: (doc: any, ret: any) => {
         delete ret.__v;
     },
 });
@@ -96,7 +96,7 @@ LogAPISchema.pre<ILogAPI>("save", async function (next: any) {
     try {
         const _this = this;
 
-        //TODO: Update time for document
+        // TODO: Update time for document
         if (_this.isNew) {
             Object.assign(_this.$locals, { wasNew: _this.isNew });
             // _this.$locals.wasNew = _this.isNew;
@@ -116,19 +116,19 @@ LogAPISchema.pre<ILogAPI>("save", async function (next: any) {
 LogAPISchema.post<ILogAPI>("save", function (this: any) {
     try {
         const _this = this;
-        //! This is a document after save
+        // ! This is a document after save
         if (_this?.$locals?.wasNew) {
-            //new document
+            // new document
         } else {
-            //old document
+            // old document
         }
     } catch (error) {
         throw new Error(error);
     }
 });
 
-//TODO: Log error
-LogAPISchema.post<ILogAPI>("save", function (error: any, doc: any, next: any) {
+// TODO: Log error
+LogAPISchema.post<ILogAPI>("save", (error: any, doc: any, next: any) => {
     if (process.env.NODE_ENV === "development") {
         logger.log(doc);
     }
@@ -137,7 +137,7 @@ LogAPISchema.post<ILogAPI>("save", function (error: any, doc: any, next: any) {
     else next(error);
 });
 
-//TODO: Query
+// TODO: Query
 LogAPISchema.pre<Query<Document, ILogAPI, ILogAPI>>(
     "findOne",
     async function () {
@@ -148,7 +148,7 @@ LogAPISchema.pre<Query<Document, ILogAPI, ILogAPI>>(
     }
 );
 
-//Set up PaginateModel
+// Set up PaginateModel
 // LogAPISchema.plugin(MongoosePaginate);
 
 // interface Model<T extends Document> extends PaginateModel<T> {}

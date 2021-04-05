@@ -9,7 +9,7 @@ const timeEX: number = 120;
 
 export function init() {
     if (!client) {
-        //default connect redis localhost:3306
+        // default connect redis localhost:3306
         client = new Redis(REDIS.REDIS_URL);
         client.on("error", (err: any) => {
             logger.error(
@@ -30,8 +30,8 @@ export function init() {
             logger.info("Time check: " + `${new Date().toLocaleString()}`);
             logger.log(`================== END ==================`);
         });
-        //TODO: Deletes all keys from the connection's current database
-        client.flushdb();
+        // TODO: Deletes all keys from the connection's current database
+        // client.flushdb();
         return client;
     } else {
         logger.warn(`Connect to Redis success`);

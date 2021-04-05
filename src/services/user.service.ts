@@ -14,7 +14,7 @@ import {
     USER_SUCCESS_MESSAGE,
 } from "../messages/success/user.success.message";
 import * as UserRepository from "../repository/user.repository";
-import * as UserSessionRepository from "../repository/user.session.repository";
+import * as UserSessionRepository from "../repository/userSession.repository";
 import {
     generateAccessToken,
     generateRefreshToken,

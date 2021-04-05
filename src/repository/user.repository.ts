@@ -1,6 +1,6 @@
 import UserModel from "../models/user.model";
 import { Schema } from "mongoose";
-//!important: session only using for transaction => don't using it for 1 query
+// !important: session only using for transaction => don't using it for 1 query
 
 /**
  *

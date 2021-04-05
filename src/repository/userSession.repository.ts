@@ -1,8 +1,8 @@
 import { Schema } from "mongoose";
 
-import UserSessionModel from "../models/user.session.model";
+import UserSessionModel from "../models/userSession.model";
 
-//!important: session only using for transaction => don't using it for 1 query
+// !important: session only using for transaction => don't using it for 1 query
 
 /**
  *
