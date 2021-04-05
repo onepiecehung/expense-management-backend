@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 
 import { messageWelcome } from "../../../config/message.config";
 import { responseSuccess } from "../../../core/response/response.json";
