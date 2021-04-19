@@ -11,6 +11,10 @@ const TransactionSchema: Schema = new Schema(
             ref: UserModel,
             index: true,
         },
+        date: {
+            type: Schema.Types.Date,
+            required: true,
+        },
         price: {
             type: Schema.Types.Number,
             required: true,
@@ -19,9 +23,16 @@ const TransactionSchema: Schema = new Schema(
             type: Schema.Types.String,
             required: true,
         },
+        category: {
+            type: Schema.Types.String,
+            required: true,
+        },
+        note: {
+            type: Schema.Types.String,
+        },
         status: {
             type: Schema.Types.Number,
-            required: true,
+            default: 1,
         },
     },
     {
@@ -34,6 +45,8 @@ TransactionSchema.set("toJSON", {
     transform: (doc: any, ret: any) => {
         ret.createdAt = ret.createdAt?.getTime();
         ret.updatedAt = ret.updatedAt?.getTime();
+        ret.date = ret.date?.getTime();
+        delete ret.status;
         delete ret.__v;
     },
 });
@@ -42,6 +55,8 @@ TransactionSchema.set("toObject", {
     transform: (doc: any, ret: any) => {
         ret.createdAt = ret.createdAt?.getTime();
         ret.updatedAt = ret.updatedAt?.getTime();
+        ret.date = ret.date?.getTime();
+        delete ret.status;
         delete ret.__v;
     },
 });

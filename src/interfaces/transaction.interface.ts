@@ -1,8 +1,10 @@
-import { Schema, Document } from "mongoose";
+import { ObjectId, Document, Date } from "mongoose";
 
 export interface ITransaction extends Document {
-    user?: Schema.Types.ObjectId | string;
+    user?: ObjectId | string;
+    date?: Date;
     price?: number;
     currency?: string;
+    category?: string;
     status?: number;
 }

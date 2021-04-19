@@ -70,8 +70,10 @@ export async function UpdateCategoryValidator(
     next: NextFunction
 ) {
     try {
-        await CategoryValidationSchema.validateAsync(req.body);
-        await CategoryIDValidationSchema.validateAsync(req.params);
+        await Promise.all([
+            CategoryValidationSchema.validateAsync(req.body),
+            CategoryIDValidationSchema.validateAsync(req.params),
+        ]);
         next();
     } catch (error) {
         logger.error(error);

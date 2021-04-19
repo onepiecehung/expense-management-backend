@@ -2,6 +2,7 @@ export declare const SERVER: {
     PORT: string;
     URL_API_HOST: string;
     DOCS_PATH: string;
+    WS_PORT: string;
 };
 export declare const MONGO: {
     DB_URL: string;

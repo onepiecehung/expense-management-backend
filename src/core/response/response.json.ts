@@ -71,7 +71,7 @@ export async function responseError(
         data: {
             errorMessage:
                 typeof error === "string" ? error : error?.message || `bruh...`,
-            request: req?.url,
+            request: req?.originalUrl,
             method: req?.method,
         },
     } as any;
