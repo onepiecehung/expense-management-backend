@@ -11,13 +11,10 @@ const express_prom_bundle_1 = __importDefault(require("express-prom-bundle")); /
 const helmet_1 = __importDefault(require("helmet"));
 const http_errors_1 = __importDefault(require("http-errors"));
 const morgan_1 = __importDefault(require("morgan"));
-const ua_parser_js_1 = __importDefault(require("ua-parser-js"));
-const uuid_1 = require("uuid");
 const __test___worker_1 = require("./connector/rabbitmq/__test__/__test__.worker");
 const index_1 = require("./connector/rabbitmq/index");
 const logger_winston_1 = __importDefault(require("./core/log/logger.winston"));
 const response_json_1 = require("./core/response/response.json");
-const logger_middleware_1 = require("./middleware/logger/logger.middleware");
 const api_version_1_0_0_routes_1 = __importDefault(require("./routes/graphql/api.version.1.0.0.routes"));
 const api_version_1_0_0_routes_2 = __importDefault(require("./routes/rest/bin/api.version.1.0.0.routes"));
 const metricsMiddleware = express_prom_bundle_1.default({
@@ -51,17 +48,24 @@ index_1.createQueue()
     console.error("Error init rabbit : ", error);
 });
 const app = express_1.default();
-app.use((req, res, next) => {
-    Object.assign(res.locals, {
-        userAgent: new ua_parser_js_1.default(req.headers["user-agent"]),
-    }, {
-        ip: req.headers["x-forwarded-for"] ||
-            req.ip ||
-            req.ips ||
-            req.headers["x-real-ip"],
-    }, { uuid: uuid_1.v4() });
-    next();
-}, logger_middleware_1.log);
+// ! This only for production
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//     Object.assign(
+//         res.locals,
+//         {
+//             userAgent: new UAParser(req.headers["user-agent"]),
+//         },
+//         {
+//             ip:
+//                 req.headers["x-forwarded-for"] ||
+//                 req.ip ||
+//                 req.ips ||
+//                 req.headers["x-real-ip"],
+//         },
+//         { uuid: uuidv4() }
+//     );
+//     next();
+// }, log);
 /**
  * todo: https://www.npmjs.com/package/express-prom-bundle
  */

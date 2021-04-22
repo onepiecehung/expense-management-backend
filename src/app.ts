@@ -52,23 +52,24 @@ createQueue()
 
 const app: Application = express();
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-    Object.assign(
-        res.locals,
-        {
-            userAgent: new UAParser(req.headers["user-agent"]),
-        },
-        {
-            ip:
-                req.headers["x-forwarded-for"] ||
-                req.ip ||
-                req.ips ||
-                req.headers["x-real-ip"],
-        },
-        { uuid: uuidv4() }
-    );
-    next();
-}, log);
+// ! This only for production
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//     Object.assign(
+//         res.locals,
+//         {
+//             userAgent: new UAParser(req.headers["user-agent"]),
+//         },
+//         {
+//             ip:
+//                 req.headers["x-forwarded-for"] ||
+//                 req.ip ||
+//                 req.ips ||
+//                 req.headers["x-real-ip"],
+//         },
+//         { uuid: uuidv4() }
+//     );
+//     next();
+// }, log);
 
 /**
  * todo: https://www.npmjs.com/package/express-prom-bundle
